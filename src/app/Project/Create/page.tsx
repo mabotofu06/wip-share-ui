@@ -1,89 +1,104 @@
 "use client";
-import { MoleculesModal } from "@/app/_components/molecules/Modal";
+import { OrganismsPostFormModal } from "@/app/_components/organisms/modal/PostFormModal";
+import { openModal } from "@/app/_state/slice/modal";
+import { store } from "@/app/_state/store";
 import { useState } from "react";
+import { useEffect } from "react";
 
 export default function ProjectCreatePage() {
+  useEffect(() => {
+    document.title = "新しいプロジェクトを作成 | WIP Share";
+    const metaDescription = document.querySelector("meta[name='description']");
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "新しいプロジェクトの作成ページです。タイトルと説明を入力して投稿できます。");
+    } else {
+      const meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = "新しいプロジェクトの作成ページです。タイトルと説明を入力して投稿できます。";
+      document.head.appendChild(meta);
+    }
+  }, []);
+
+  const [open, setOpenModal] = useState(false);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [images, setImages] = useState<File[]>([]);
-  const [showContinueModal, setShowContinueModal] = useState(false);
-  const [showPostModal, setShowPostModal] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImages(Array.from(e.target.files));
-    }
-  };
+  const submitProjectDraft = () =>{
+    setOpenModal(true);
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // ここでAPI送信などの処理を実装
-    setShowContinueModal(true);
-  };
-
-  const handleContinue = () => {
-    setShowContinueModal(false);
-    setShowPostModal(true);
-  };
-
-  const handleReject = () => {
-    window.location.href = "/Project/User";
-  };
+  const submitProject = () => {
+    // TODO:ここでAPI送信などの処理を実装
+    console.log("Project submitted:", { title, description });
+    //store.dispatch(open())
+    //setOpenModal(true);
+    window.location.href = "/Project/Create/Complete";
+  }
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-8 bg-white rounded-2xl shadow">
-      <h1 className="text-2xl font-bold mb-6 text-green-700">新しいプロジェクトを作成</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <input
-            type="text"
-            className="w-full border rounded px-3 py-2"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            placeholder="プロジェクトのタイトルを入力"
-            required
+    <div className="flex flex-col justify-center items-center w-full m-8">
+      <h1 className="text-2xl font-bold mb-8">新しいプロジェクトを作成</h1>
+      <div className="project-form w-[800px]">
+          <div className="mb-4">
+            <input
+              type="text"
+              className="w-full border rounded-3xl p-3"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              placeholder="タイトルを入力"
+              required
           />
         </div>
         <div className="mb-4">
           <textarea
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded-3xl p-5 resize-none"
             value={description}
             onChange={e => setDescription(e.target.value)}
-            rows={5}
+            rows={30}
             placeholder="プロジェクトの説明を入力"
             required
           />
         </div>
         <button
           type="submit"
-          className="w-full py-3 bg-green-600 text-white rounded font-bold text-lg mt-4"
+          className="w-full py-3 rounded-2xl font-bold border text-lg mt-4"
+          onClick={submitProjectDraft}
+        >
+          下書きとして投稿
+        </button>
+        <button
+          type="submit"
+          className="w-full py-3 bg-green-600 text-white rounded-2xl font-bold text-lg mt-4"
+          onClick={submitProject}
         >
           投稿する
         </button>
-      </form>
+      </div>
 
-      {/* 投稿後のモーダル */}
-      {showContinueModal && (
-        <MoleculesModal>
-          <div className="bg-white rounded-xl p-8 shadow-xl text-center">
-            <p className="mb-6 text-lg">さらに画像をポストしますか？</p>
-            <div className="flex gap-4 justify-center">
-              <button className="px-6 py-2 bg-green-600 text-white rounded" onClick={handleContinue}>続ける</button>
-              <button className="px-6 py-2 bg-gray-300 text-gray-700 rounded" onClick={handleReject}>しない</button>
+      {
+        open
+        ? (
+          <div className="overlay">
+            <div className="flex flex-col justify-center items-end h-full">
+              <button
+                className="text-6xl text-gray-600 hover:text-gray-800 flex items-center justify-center rounded-full"
+                onClick={() => setOpenModal(false)}
+                aria-label="閉じる"
+              >
+              ×
+              </button>
+              <div className="bg-white text-2xl flex flex-col items-center w-[800px] rounded-2xl p-8">
+                <span className="font-bold text-green-700 flex text-center mb-3">
+                  作業状況を下書きとして保存しました
+                </span>
+              </div>
             </div>
-          </div>
-        </MoleculesModal>
-      )}
+          </div>)
+        : null
+      }
 
-      {/* 画像ポスト投稿モーダル（ダミー） */}
-      {showPostModal && (
-        <MoleculesModal>
-          <div className="bg-white rounded-xl p-8 shadow-xl text-center">
-            <p className="mb-6 text-lg">画像ポスト投稿モーダル（ここに投稿フォームを実装）</p>
-            <button className="px-6 py-2 bg-green-600 text-white rounded" onClick={()=>setShowPostModal(false)}>閉じる</button>
-          </div>
-        </MoleculesModal>
-      )}
+      <OrganismsPostFormModal />
     </div>
   );
-}
+};

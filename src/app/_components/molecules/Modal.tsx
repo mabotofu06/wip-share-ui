@@ -2,23 +2,39 @@ import { closeModal } from "@/app/_state/slice/modal";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export const MoleculesModal = ({
-  props = { open: false },
-  children
-}: { props?: { open: boolean }; children: React.ReactNode }) => {
+type Props = {
+  title: string;
+  acceptBtnLabel?: string;
+  acceptBtnOnClick?: () => Promise<void>;
+  children: React.ReactNode;
+}
+
+export const MoleculesModal = (
+  { title = "Modal Title", acceptBtnLabel, acceptBtnOnClick, children }: Props) => {
   const dispatch = useDispatch();
   const modalOpen = useSelector((state: any) => state.modal.open);
 
-  if (!modalOpen) return null;
+  if (!modalOpen) return (null);
   return (
     <div className={`overlay`}>
-      <div className="modal bg-white">
+      {/* モーダル */}
+      <div className="modal bg-white rounded-2xl p-5 min-w-[600px]">
+        
         <div className="modal-header">
-          <h2 className="modal-title">Modal Title</h2>
+          <h2 className="modal-title text-2xl font-bold mb-6 text-green-700">{title}</h2>
         </div>
+        
         {children}
-        <div className="modal-footer bg-white">
-          <button className="close-button border border-red-500 rounded-xl" onClick={() => dispatch(closeModal())}>Close</button>
+
+        <div className="modal-footer flex justify-between">
+          <button className="close-button text-red-500 text-xl border p-2 rounded-2xl" onClick={() => dispatch(closeModal())}>
+            閉じる
+          </button>
+          {
+            acceptBtnLabel && acceptBtnOnClick
+              ? <button className="accept-btn bg-green-600 text-white rounded-xl px-4 py-2" onClick={acceptBtnOnClick}>{acceptBtnLabel}</button>
+              : null
+          }
         </div>
       </div>
     </div>

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { ActionMenu, OrganismsWipproCard } from "../organisms/WipproCard";
 import { OrganismsPostCard } from "../organisms/PostCard";
+import { store } from "@/app/_state/store";
+import { openModal } from "@/app/_state/slice/modal";
 
 const userInfo = {
   name     : "まーぼーどーふ",
@@ -60,8 +62,10 @@ export default function TemplatesWippro() {
           </div>
         </div>
       </div>
+
       {/* 表示切替タブ（アイコンボタン） */}
-      <div className="flex items-center my-4">
+      <div className="flex items-center justify-between my-4">
+        <div className="flex items-center">
         <span className="mr-2">表示サイズ：</span>
         <button
           className={`p-2 rounded-full border flex items-center justify-center w-10 h-10 ${activeTab===0 ? 'bg-green-600 text-white' : 'bg-white text-green-600'}`}
@@ -104,8 +108,17 @@ export default function TemplatesWippro() {
             <rect x="16" y="16" width="5" height="5" rx="1" />
           </svg>
         </button>
+        </div>
+
+        <button
+          className="new-post-button bg-green-500 text-white py-2 px-4 rounded-3xl"
+          onClick={() => store.dispatch(openModal())}
+        >
+          新しいポスト
+        </button>
 
       </div>
+
       <div className="flex flex-col" style={{minHeight: "calc(100vh - 350px)"}}>
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           {activeTab === 0 ? (
@@ -127,6 +140,8 @@ export default function TemplatesWippro() {
           )}
         </div>
       </div>
+
+      <OrganismsPostCard/>
     </div>
   );
 }

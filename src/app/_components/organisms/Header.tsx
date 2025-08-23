@@ -29,7 +29,7 @@ const menuItems = [
     )
   },{
     name: "作業中の投稿",
-    link: "/Top",
+    link: "/Project/List",
     icon: (
       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <path d="M21 10.5a8.38 8.38 0 01-7.5 7.5A8.38 8.38 0 013 10.5V7a4 4 0 014-4h6a4 4 0 014 4v3.5z" />
@@ -100,7 +100,7 @@ export default function OrganismsMenuBar_L() {
             className="new-project-button p-4 bg-green-500 text-white rounded-3xl text-xl"
             onClick={() => {
               console.log("新しいプロジェクトを作成");
-              store.dispatch(openModal())
+              window.location.href = "/Project/Create";
             }}
           >
             新しいプロジェクトを作成

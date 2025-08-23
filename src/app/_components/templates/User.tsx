@@ -89,6 +89,12 @@ export default function TemplatesUser() {
             ))}
           </div>
         </div>
+
+        <div>
+          作成したプロジェクト： 5
+          作業中のプロジェクト： 2
+          完了したプロジェクト： 3
+        </div>
       </div>
 
       <div className="flex flex-col" style={{height: "calc(100vh - 600px)"}}>
