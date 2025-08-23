@@ -1,42 +1,13 @@
 'use client'
 
-import { useState } from "react";
 import { OrganismsWipproCard } from "../organisms/WipproCard";
+import { OrganismsTabMenu } from "../organisms/TabMenu";
 
-const NavigationTab = (props: { activeTab: number; onChange: (index: number) => void; }) => {
-  const navigationMenu = [
-    {label: "すべて"         , code: 0},
-    {label: "作業中の投稿"    , code: 1},
-    {label: "作業完了した投稿", code: 2},
-  ]
-
-  const activeNavCode = navigationMenu[props.activeTab].code;
-
-  const onTabClick = (index: number) => {
-    props.onChange(index);
-  }
-
-  const navTabElements = navigationMenu.map((item, index) => {
-    if(item.code !== activeNavCode){return (
-      <button className="nav-tab-item-button w-1/3 py-2 rounded-t-xl" key={index} onClick={() => onTabClick(index)}>
-        {item.label}
-      </button>
-    )}
-    else {
-      return (
-        <button className="nav-tab-item-button w-1/3 py-2 rounded-t-xl bg-green-500 text-white" key={index} onClick={() => onTabClick(index)}>
-          {item.label}
-        </button>
-      );
-    }
-  });
-
-  return (
-    <div className="nav-tab flex mt-3 border-b-2 border-green-500">
-      {navTabElements}
-    </div>
-  );
-};
+const navigationMenu = [
+  {label: "すべて"         , code: 0},
+  {label: "作業中の投稿"    , code: 1},
+  {label: "作業完了した投稿", code: 2},
+]
 
 const userInfo = {
   name     : "まーぼーどーふ",
@@ -51,7 +22,7 @@ const userInfo = {
 };
 
 export default function TemplatesUser() {
-  const [activeTab, setActiveTab] = useState(0);
+  const initialTab = navigationMenu[0].code;
   const iconSize = "w-25 h-25";
 
   return (
@@ -90,20 +61,27 @@ export default function TemplatesUser() {
           </div>
         </div>
 
-        <div>
-          作成したプロジェクト： 5
-          作業中のプロジェクト： 2
-          完了したプロジェクト： 3
-        </div>
+        {/* <div className="project-stats flex flex-col">
+          <span className="font-semibold">作成したプロジェクト： 5</span>
+          <span className="font-semibold">作業中のプロジェクト： 2</span>
+          <span className="font-semibold">完了したプロジェクト： 3</span>
+        </div> */}
       </div>
 
       <div className="flex flex-col" style={{height: "calc(100vh - 600px)"}}>
-        <NavigationTab activeTab={activeTab} onChange={setActiveTab} />
+        <OrganismsTabMenu tabMenu={navigationMenu} activeTab={initialTab} onChange={()=>{}}>
+          <div className="flex-1 overflow-y-auto">
+            {Array.from({ length: 5 }, (_, index) => (
+              <OrganismsWipproCard className="mt-3" key={index} />
+            ))}
+          </div>
+        </OrganismsTabMenu>
+        {/* <NavigationTab activeTab={activeTab} onChange={setActiveTab} />
         <div className="flex-1 overflow-y-auto">
           {Array.from({ length: 5 }, (_, index) => (
             <OrganismsWipproCard className="mt-3" key={index} />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

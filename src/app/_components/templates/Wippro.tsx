@@ -5,6 +5,7 @@ import { ActionMenu, OrganismsWipproCard } from "../organisms/WipproCard";
 import { OrganismsPostCard } from "../organisms/PostCard";
 import { store } from "@/app/_state/store";
 import { openModal } from "@/app/_state/slice/modal";
+import { OrganismsPostFormModal } from "../organisms/modal/PostFormModal";
 
 const userInfo = {
   name     : "まーぼーどーふ",
@@ -141,7 +142,7 @@ export default function TemplatesWippro() {
         </div>
       </div>
 
-      <OrganismsPostCard/>
+      <OrganismsPostFormModal/>
     </div>
   );
 }
