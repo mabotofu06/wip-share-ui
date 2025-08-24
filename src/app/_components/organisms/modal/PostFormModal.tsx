@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { MoleculesModal } from "../../molecules/Modal";
+import { closeModal } from "@/app/_state/slice/modal";
+import { store } from "@/app/_state/store";
   
 export const OrganismsPostFormModal = () => {
   const [open, setOpen] = useState(false);
@@ -13,12 +15,27 @@ export const OrganismsPostFormModal = () => {
   }
 
   const submitForm = async () => {
+    //store.dispatch(closeModal());
     setOpen(true);
   }
 
   return (
     <div>
       <MoleculesModal>
+        {open ? (
+          <div className="flex flex-col justify-center items-center">
+            <h2>投稿が完了しました！</h2>
+            <button
+              className="mt-4 bg-green-600 text-white rounded-2xl font-bold text-lg py-3 px-6"
+              onClick={() => {
+                setOpen(false);
+                store.dispatch(closeModal());
+              }}
+            >
+              閉じる
+            </button>
+          </div>
+        ) : (
         <div className="project-form m-8 w-[800px]">
           <div className="mb-4">
             {image ? (
@@ -96,7 +113,8 @@ export const OrganismsPostFormModal = () => {
           >
             投稿する
           </button>
-      </div>
+      </div>)
+      }
       </MoleculesModal>
     </div>
   );

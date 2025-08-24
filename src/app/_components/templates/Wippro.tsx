@@ -20,8 +20,8 @@ const userInfo = {
 };
 
 const postData = {
-  title: "エッチなバニーガール衣装を描きたい",
-  content: `バニーガール衣装のデザインについて考えています。セクシーさと可愛らしさを両立させるために、素材や色使い、アクセサリーの選定が重要です。<br>例えば、黒や赤のサテン生地を使うことで高級感を出しつつ、胸元や背中のカットを大胆にすることでセクシーさを演出できます。<br>耳やしっぽなどの小物も、ふわふわした素材を使うことで可愛らしさをプラスできます。<br>さらに、網タイツやハイヒールなどの定番アイテムも忘れずに取り入れたいです。<br>ポージングや表情も衣装の魅力を引き立てる要素なので、描く際にはキャラクターの個性や雰囲気に合わせて工夫したいです。<br>背景にはカジノやステージなど、バニーガールが映えるシチュエーションを選ぶとより魅力的なイラストになります。<br>衣装の細部までこだわり、見る人が思わず惹き込まれるような作品を目指して描いていきたいです。<br>今後は、他のカラーやデザインバリエーションも試してみて、自分だけのオリジナルバニーガール衣装を完成させたいと思います。`,
+  title: "",
+  content: "",
   image: "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
   update: Date.now() - 1000 * 60 * 60 * 24 * 2, // 2 days ago
   postNum: 13
@@ -89,24 +89,6 @@ export default function TemplatesWippro() {
             <rect x="13" y="4" width="7" height="7" rx="2" />
             <rect x="4" y="13" width="7" height="7" rx="2" />
             <rect x="13" y="13" width="7" height="7" rx="2" />
-          </svg>
-        </button>
-        <button
-          className={`p-2 rounded-full border flex items-center justify-center w-10 h-10 ${activeTab===2 ? 'bg-green-600 text-white' : 'bg-white text-green-600'}`}
-          onClick={()=>setActiveTab(2)}
-          aria-label="タイル表示"
-        >
-          {/* タイルアイコン（グリッド） */}
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <rect x="2" y="2" width="5" height="5" rx="1" />
-            <rect x="9" y="2" width="5" height="5" rx="1" />
-            <rect x="16" y="2" width="5" height="5" rx="1" />
-            <rect x="2" y="9" width="5" height="5" rx="1" />
-            <rect x="9" y="9" width="5" height="5" rx="1" />
-            <rect x="16" y="9" width="5" height="5" rx="1" />
-            <rect x="2" y="16" width="5" height="5" rx="1" />
-            <rect x="9" y="16" width="5" height="5" rx="1" />
-            <rect x="16" y="16" width="5" height="5" rx="1" />
           </svg>
         </button>
         </div>

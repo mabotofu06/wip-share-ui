@@ -2,6 +2,12 @@
 
 import React, { useState } from "react";
 import { createElement } from "react";
+import { AtomsIconHeart } from "../atoms/icon/Heart";
+import { ActionButton } from "../molecules/ActionButton";
+import { AtomsIconBookmark } from "../atoms/icon/Bookmark";
+import { AtomsIconFace } from "../atoms/icon/Face";
+import { OrganismsReactionButton } from "./ActionButton";
+import { OrganismsStampButton } from "./StampButton";
 
 const userInfo = {
   name: "まーぼーどーふ",
@@ -9,8 +15,8 @@ const userInfo = {
 };
 
 const wippoData = {
-  title: "エッチなバニーガール衣装を描きたい 😀",
-  content: "てすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてすとてす",
+  title: "",
+  content: "",
   images: [
     "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
     "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
@@ -30,60 +36,14 @@ const wippoData = {
 
 export const ActionMenu = ()=>{
   return(
-    <div className="actions flex items-center gap-6 mt-2">
-      <button
-        className="like flex items-center gap-1 text-gray-600 hover:text-red-500 transition"
-        onClick={() => alert("いいねしました")}
-        aria-label="いいね"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          className="heart-icon"
-        >
-          <path d="M10 17.5l-1.45-1.32C4.4 12.36 2 10.28 2 7.5 2 5.5 3.5 4 5.5 4c1.04 0 2.04.51 2.65 1.35C8.96 4.51 9.96 4 11 4c2 0 3.5 1.5 3.5 3.5 0 2.78-2.4 4.86-6.55 8.68L10 17.5z" />
-        </svg>
-      </button>
-      
-      <button
-        className="bookmark flex items-center gap-1 text-gray-600 hover:text-blue-500 transition"
-        onClick={() => alert("ブクマしました")}
-        aria-label="ブクマ"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          className="bookmark-icon"
-        >
-          <path d="M5 3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14a1 1 0 0 1-1.447.894L10 15.618l-4.553 2.276A1 1 0 0 1 4 17V3zm2 0v13.382l3-1.5 3 1.5V3H7z" />
-        </svg>
-      </button>
-
-          <button
-            className="stamp flex items-center gap-1 text-gray-600 hover:text-green-500 transition"
-            onClick={() => alert("スタンプしました")}
-            aria-label="スタンプ"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              className="stamp-icon"
-            >
-              <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1" fill="none" />
-              <circle cx="7" cy="9" r="1" fill="currentColor" />
-              <circle cx="13" cy="9" r="1" fill="currentColor" />
-              <path d="M7 13c1.5 1 4.5 1 6 0" stroke="currentColor" strokeWidth="1" fill="none" />
-            </svg>
-          </button>
+    <div className="actions flex items-center gap-6 mt-2"> 
+      <OrganismsReactionButton
+        isLike={false}
+        isBookmark={false}
+        likeNum={0}
+        bookmarkNum={0}
+      />
+      <OrganismsStampButton />
     </div>
   )
 }

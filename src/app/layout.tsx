@@ -35,8 +35,10 @@ export default function RootLayout({
       >
         <Provider store={store}>
           <OrganismsMenuBar_L />
-          <main className="w-[800px]">{children}</main>
-
+          <main className="w-[800px]">
+            {children}
+          </main>
+          <OrganismsPostFormModal />
           {/* <OrganismsMenuBar_R /> */}
 
           {/* <OrganismsProjectFormModal />

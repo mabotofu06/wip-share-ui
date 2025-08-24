@@ -1,7 +1,9 @@
 "use client"
 
+import { APP_NAME } from "@/app/_constants/app";
 import { openModal } from "@/app/_state/slice/modal";
 import { store } from "@/app/_state/store";
+import { OrganismsUserMenu } from "./UserMenu";
 
 const appName="Wippy"
 
@@ -73,24 +75,18 @@ function getMenuItems() {
 }
 
 export default function OrganismsMenuBar_L() {
-  const iconSize = "w-10 h-10";
   return (
     <header className="bg-white-300 shadow flex flex-col justify-between w-80">
       <div>
         <div className="p-3">
-          <h1 className="text-4xl font-semibold text-green-800">{appName}</h1>
+          <h1 className="text-4xl font-semibold text-green-800">{APP_NAME}</h1>
         </div>
 
-        <div
-          className="user-menu mt-5 p-3 flex items-center bg-white hover:opacity-80 hover:bg-green-100"
-          onClick={() => window.location.href = "/User"}
-        >
-          <div className={"user-icon bg-green-800 rounded-full " + iconSize}></div>
-          <div className="user-info ml-6 flex flex-col justify-center text-md">
-            <h2 className="user-name font-semibold">{userInfo.name}</h2>
-            <p className="user-id text-xs">{userInfo.id}</p>
-          </div>
-        </div>
+        <OrganismsUserMenu
+          name={userInfo.name}
+          id={userInfo.id}
+          iconImg={""}
+        />
 
         <div className="navigation px-8">
           <nav className="flex flex-col">
@@ -103,10 +99,11 @@ export default function OrganismsMenuBar_L() {
             className="new-project-button p-4 bg-green-500 text-white rounded-3xl text-xl"
             onClick={() => {
               console.log("新しいプロジェクトを作成");
-              window.location.href = "/Project/Create";
+              store.dispatch(openModal());
+              //window.location.href = "/Project/Create";
             }}
           >
-            新しいプロジェクトを作成
+            新しい投稿を開始
           </button>
         </div>
       </div>
