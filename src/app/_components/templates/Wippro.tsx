@@ -1,11 +1,12 @@
 'use client'
 
 import { useState } from "react";
-import { ActionMenu, OrganismsWipproCard } from "../organisms/WipproCard";
+import { ActionMenu } from "../organisms/WipproCard";
 import { OrganismsPostCard } from "../organisms/PostCard";
 import { store } from "@/app/_state/store";
 import { openModal } from "@/app/_state/slice/modal";
 import { OrganismsPostFormModal } from "../organisms/modal/PostFormModal";
+import { OrganismsPostListHeaderCard } from "../organisms/PostListHeaderCard";
 
 const userInfo = {
   name     : "まーぼーどーふ",
@@ -34,35 +35,19 @@ export default function TemplatesWippro() {
 
   return (
     <div className="flex flex-col bg-white h-screen">
-      <div className="shadow rounded-4xl">
-        <div className="flex justify-between items-center p-4">
-          <div className="flex items-center">
-            <div className={"user-icon bg-green-800 rounded-full " + iconSize}></div>
-            <div className="user-info ml-3 flex flex-col justify-center text-md">
-              <h2 className="user-name font-semibold">{userInfo.name}</h2>
-              <p className="user-id text-xs">{userInfo.id}</p>
-            </div>
-          </div>
-          <div className="post-update text-gray-500">
-            更新：{new Date(postData.update).toLocaleDateString()}
-          </div>
-        </div>
-
-        <div>
-          <div className="post-details flex w-full">
-            <div className="w-full">
-              <h2 className="post-title text-xl font-semibold mb-3">{postData.title}</h2>
-              <p className="post-content ms-3 max-h-42 overflow-y-scroll mb-8 custom-scrollbar" dangerouslySetInnerHTML={{ __html: postData.content }} />
-            </div>
-          </div>
-          <div className="flex justify-between items-center p-5 border-t border-t-green-600">
-            <ActionMenu />
-            <div>
-              投稿数: <span className="post-num text-green-600 font-semibold">{postData.postNum}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <OrganismsPostListHeaderCard
+        userInfo={userInfo}
+        editable={true}
+        updated={new Date(postData.update).toLocaleDateString()}
+        title={postData.title}
+        note={postData.content}
+        likeNum={0}
+        isLike={false}
+        bookmarkNum={0}
+        isBookmark={false}
+        stamps={[]}
+        postNum={postData.postNum}
+      />
 
       {/* 表示切替タブ（アイコンボタン） */}
       <div className="flex items-center justify-between my-4">

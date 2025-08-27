@@ -3,7 +3,11 @@ import { useState } from "react";
 import { AtomsIconFace } from "../atoms/icon/Face";
 import { useEffect, useRef } from "react";
 
-export const OrganismsStampButton = ()=>{
+type Props = {
+  className?: string;
+}
+
+export const OrganismsStampButton = (props: Props)=>{
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -26,12 +30,12 @@ export const OrganismsStampButton = ()=>{
   }, [isOpen]);
 
   return (
-    <div>
-    <button
-      className="stamp flex items-center gap-1 text-gray-600 hover:text-green-500 transition"
-      onClick={() => setIsOpen(!isOpen)}
-      aria-label="スタンプ"
-    >
+    <div className={props.className}>
+      <button
+        className="stamp flex items-center gap-1 text-gray-600 hover:text-green-500 transition"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="スタンプ"
+      >
       <AtomsIconFace className="text-green-700" size={25} />
     </button>
     {isOpen && (

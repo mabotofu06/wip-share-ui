@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex ${geistSans.variable} ${geistMono.variable} antialiased h-screen text-green-800 bg-white min-w-[1200px]`}
+        className={`flex justify-center ${geistSans.variable} ${geistMono.variable} antialiased h-screen text-green-800 bg-white`}
       >
         <Provider store={store}>
           <OrganismsMenuBar_L />
