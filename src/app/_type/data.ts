@@ -14,3 +14,20 @@ export interface UserData extends UserDataBase {
   headerImg: string,
   links: Array<LinkItem>,
 }
+
+export interface UserInfo {
+  id: string;
+  name: string;
+  iconImg: string;
+}
+
+
+export interface WorkGroup {
+  id: string;
+  userInfo: UserInfo;
+  title: string;
+  note : string;
+  images: Array<string>;
+  isClose: boolean;
+  updatedAt: string;
+}

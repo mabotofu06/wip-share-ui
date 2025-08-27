@@ -1,9 +1,11 @@
 "use client";
 
 import { getUserInfo } from "@/app/_composables/userInfo";
+import { signInWithGoogle } from "@/app/_constants/supabase/client";
 import { useState } from "react";
 import { AtomsIconVerticalArrow } from "../atoms/icon/VerticalArrow";
 import { AtomsIconBookmark } from "../atoms/icon/Bookmark";
+import AuthForm from "./modal/LoginForm";
 
 
 const guestMenuList = [
@@ -23,7 +25,8 @@ const guestMenuList = [
         <path d="M21 10.5a8.38 8.38 0 01-7.5 7.5A8.38 8.38 0 013 10.5V7a4 4 0 014-4h6a4 4 0 014 4v3.5z" />
         <path d="M8 15h8" />
       </svg>
-    )
+    ),
+    onClick: signInWithGoogle
   }
 ];
 
@@ -36,15 +39,17 @@ const userMenuList = [
         <path d="M3 12l9-9 9 9M4 10v10h16V10" />
       </svg>
     )
-  },{
-    name: "プロフィール",
-    link: "/User",
-    icon: (
-      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path d="M12 8v4l3 3h-2l-3-3V8h2z" />
-      </svg>
-    )
-  },{
+  },
+  // {
+  //   name: "プロフィール",
+  //   link: "/User",
+  //   icon: (
+  //     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+  //       <path d="M12 8v4l3 3h-2l-3-3V8h2z" />
+  //     </svg>
+  //   )
+  // },
+  {
     name: "作業中の投稿",
     link: "/Project/List",
     icon: (
@@ -53,11 +58,12 @@ const userMenuList = [
         <path d="M8 15h8" />
       </svg>
     )
-  },{
-    name: "ブックマーク",
-    link: "/Top",
-    icon: (<AtomsIconBookmark />)
   },
+  // {
+  //   name: "ブックマーク",
+  //   link: "/Top",
+  //   icon: (<AtomsIconBookmark />)
+  // },
   // {
   //   name: "フォローしているユーザー",
   //   link: "/Top",
@@ -87,14 +93,22 @@ function getMenuItems(isGuest: boolean) {
 
   return isGuest ? guestMenuList.map((item, index) => {
     return (
-      <button className="flex items-center text-lg hover:bg-green-50 py-3 w-full" key={index} onClick={() => navigateTo(item.link)}>
+      <button
+        className="flex items-center text-lg hover:bg-green-50 py-3 w-full"
+        key={index}
+        onClick={item.onClick ? item.onClick : () => navigateTo(item.link)}
+      >
         {item.icon}
         {item.name}
       </button>
     );
   }) : userMenuList.map((item, index) => {
     return (
-      <button className="flex items-center text-lg hover:bg-green-50 py-3 w-full" key={index} onClick={() => navigateTo(item.link)}>
+      <button
+        className="flex items-center text-lg hover:bg-green-50 py-3 w-full"
+        key={index}
+        onClick={() => navigateTo(item.link)}
+      >
         {item.icon}
         {item.name}
       </button>
@@ -128,6 +142,7 @@ export const OrganismsUserMenu = () => {
       <div className={`user-menu-content ms-10 ${open ? "block" : "hidden"}`}>
         {getMenuItems(userInfo===undefined)}
       </div>
+      {/* <AuthForm /> */}
     </div>
   ):(
     <div>
@@ -148,6 +163,7 @@ export const OrganismsUserMenu = () => {
       <div className={`user-menu-content ms-10 ${open ? "block" : "hidden"}`}>
         {getMenuItems(userInfo===undefined)}
       </div>
+            {/* <AuthForm /> */}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 'use client'
 
-import { OrganismsWipproCard } from "../organisms/WipproCard";
+import { OrganismsGroupCard } from "../organisms/GroupCard";
 import { OrganismsTabMenu } from "../organisms/TabMenu";
 
 const navigationMenu = [
@@ -72,14 +72,14 @@ export default function TemplatesUser() {
         <OrganismsTabMenu tabMenu={navigationMenu} activeTab={initialTab} onChange={()=>{}}>
           <div className="flex-1 overflow-y-auto">
             {Array.from({ length: 5 }, (_, index) => (
-              <OrganismsWipproCard className="mt-3" key={index} />
+              <OrganismsGroupCard className="mt-3" key={index} />
             ))}
           </div>
         </OrganismsTabMenu>
         {/* <NavigationTab activeTab={activeTab} onChange={setActiveTab} />
         <div className="flex-1 overflow-y-auto">
           {Array.from({ length: 5 }, (_, index) => (
-            <OrganismsWipproCard className="mt-3" key={index} />
+            <OrganismsGroupCard className="mt-3" key={index} />
           ))}
         </div> */}
       </div>

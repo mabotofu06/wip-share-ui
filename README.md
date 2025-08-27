@@ -19,19 +19,101 @@ wip-shareは作業進捗を気軽に発信、他の人からのアクション�
 # 初期リリース版(v0.1.x)
 ### 必要機能
 v0.0.5
-* 投稿機能（新規投稿、追加投稿、画像投稿）
+* 投稿機能（新規投稿、追加投稿、画像アップロード）
 * タイムライン機能
 * 進捗詳細閲覧機能
-* 認証機能
+* 認証機能(外部認証OAuthなどを利用)まずはGoogle、他使えるならXなども
+* 投稿ユーザ招待制機能
+
+ここ目度でリリース（招待制）
 
 v0.1.0
 * ユーザ情報照会・更新機能
-* 共有機能
+* 共有機能（ワンボタンで外部SNSと連携）
 * アクション機能（いいね、スタンプ）
+
+以降の構想
+* ポイント機能(mochi)
+  * ログインボーナスや投稿頻度でポイントゲット(作業終了 => 投稿数 × 1mochi)
+  * ポイントから特別な応援スタンプや投稿数を増やせる
+  * ポイントを課金でも買えるように(1mochi = 1円みたいな)
+
+* 作業配信（ワークスペース）
 
 # ルール・規則
   * R18画像は投稿不可（R15作品まで）
-  * 投稿グループは同時に3つまで
-  * 投稿グループはそれぞれ1日1件の投稿まで
-  * 投稿は1つのグループに10件の投稿まで
-  * 投稿は1つの画像とノート必須
+  * 作業中の投稿グループは同時に3つまで（それ以上は一つでも完了させないと不可）
+  * 投稿グループはそれぞれ1日1件の投稿まで（後々課金やポイントで増やせるように、ソシャゲのスタミナみたいな感じで）
+  * 投稿は1つのグループに10件の投稿まで（これも後々ポイントや優良ユーザは増やせるように）
+  * 投稿は1つの画像とノート必須（投稿は動画などもできるようにしたいがそこはコストとの兼ね合い）
+
+
+# テーブル
+supabaseのテーブルとストレージを使う
+
+作業グループテーブル
+物理名|型
+---|---
+group_id       | uuid
+user_id        | varchar(25)
+title          | varchar(50)
+content        | string
+images         | URL[]
+close_flag     | boolean
+create_datetime| timestanp
+update_datetime| timestanp
+delete_flag    | boolean
+delete_datetime| timestanp
+
+作業ポストテーブル
+物理名|型
+---|---
+post_id        | uuid
+group_id       | uuid
+image          | URL
+content        | string(varchar(200))
+create_datetime| timestanp
+update_datetime| timestanp
+delete_flag    | boolean
+delete_datetime| timestanp
+
+ユーザ情報テーブル
+物理名|型
+---|---
+user_id|string
+user_name|string
+icon_image|string
+note|string
+
+
+以下v0.1.xリリース======
+
+リアクション情報テーブル
+物理名|型
+---|---
+id
+group_id
+user_id
+type
+
+スタンプ情報テーブル(グループ)
+物理名|型
+---|---
+id      | uuid
+group_id| uuid
+user_id | string
+stamp_id| uuid
+
+スタンプ情報テーブル(ポスト)
+物理名|型
+---|---
+id      | uuid
+post_id | uuid
+user_id | string
+stamp_id| uuid
+
+スタンプ管理マスタ
+物理名|型
+---|---
+id          | uuid 
+stamp_image | string

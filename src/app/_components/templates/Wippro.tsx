@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { ActionMenu } from "../organisms/WipproCard";
+import { ActionMenu } from "../organisms/GroupCard";
 import { OrganismsPostCard } from "../organisms/PostCard";
 import { store } from "@/app/_state/store";
 import { openModal } from "@/app/_state/slice/modal";
