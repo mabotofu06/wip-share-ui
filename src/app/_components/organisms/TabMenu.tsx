@@ -18,7 +18,7 @@ export const OrganismsTabMenu = (props: Props) => {
 
   return (
     <div>
-      <div className="nav-tab flex mt-3 border-b-2 border-green-500 overflow-x-auto">
+      <div className="nav-tab flex justify-center mt-3 border-b-2 border-green-500 overflow-x-auto">
         {props.tabMenu.map((item, index) => {
           return createElement(
             'button',

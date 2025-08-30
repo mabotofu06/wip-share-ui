@@ -1,14 +1,23 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MoleculesModal } from "../../molecules/Modal";
 import { closeModal } from "@/app/_state/slice/modal";
 import { store } from "@/app/_state/store";
+import { uploadPostImage } from "@/app/_constants/supabase/storageClient";
+import { insertWorkGroup } from "@/app/_constants/supabase/workGroupClient";
+import { insertNewPost } from "@/app/_constants/supabase/postClient";
   
+type Props = {
+  groupId?: string;
+}
+
 export const OrganismsPostFormModal = () => {
   const [open, setOpen] = useState(false);
-
   const [note, setNote] = useState("");
   const [image, setImage] = useState<File | null>(null);
+
+  // useEffect(() => {
+  // },[]);
 
   const deleteImage = () => {
     setImage(null);
@@ -16,6 +25,30 @@ export const OrganismsPostFormModal = () => {
 
   const submitForm = async () => {
     //store.dispatch(closeModal());
+    //バリデーションチェック
+    if(!image) {
+      console.error("No image selected");
+      return
+    }
+    if(!note && note.length <= 150){
+      console.error("Note is required and must be less than 150 characters");
+      return;
+    }
+    console.log("submitForm", { note, image });
+
+    //画像をアップロードし、公開URLを取得する
+    const publicUrl = await uploadPostImage(image);
+    if (!publicUrl) return;
+
+    // 投稿データ（グループとポスト）を新規作成する（TODO:トランザクション）
+    const groupId = await insertWorkGroup(publicUrl);
+    if (!groupId) return;
+    const postId = await insertNewPost(publicUrl, note, groupId);
+    if (!postId) return;
+
+    console.log("Image uploaded successfully:", publicUrl);
+    setImage(null);
+    setNote("");
     setOpen(true);
   }
 
@@ -24,15 +57,16 @@ export const OrganismsPostFormModal = () => {
       <MoleculesModal>
         {open ? (
           <div className="flex flex-col justify-center items-center">
-            <h2>投稿が完了しました！</h2>
+            <h2 className="text-2xl">投稿が完了しました！</h2>
+            <h2 className="text-2xl mb-8">新しい作品グループに説明を追加してみませんか？</h2>
             <button
-              className="mt-4 bg-green-600 text-white rounded-2xl font-bold text-lg py-3 px-6"
+              className="bg-green-600 text-white rounded-2xl font-bold text-lg py-3 px-6"
               onClick={() => {
                 setOpen(false);
                 store.dispatch(closeModal());
               }}
             >
-              閉じる
+              作品グループを開く
             </button>
           </div>
         ) : (
@@ -65,6 +99,7 @@ export const OrganismsPostFormModal = () => {
                   e.stopPropagation();
                 if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                   setImage(e.dataTransfer.files[0]);
+                  setNote(note => note); // ダミーのsetStateで再レンダリングを強制
                 }
                 }}
               >
@@ -81,14 +116,16 @@ export const OrganismsPostFormModal = () => {
                   className="hidden"
                   onChange={e => {
                     if (e.target.files && e.target.files[0]) {
-                    setImage(e.target.files[0]);
+                      console.log("imageUp")
+                      setImage(e.target.files[0]);
+                      
                     }
                   }}
-                  ref={input => {
-                    if (input && !image) {
-                    input.value = "";
-                    }
-                  }}
+                  // ref={input => {
+                  //   if (input && !image) {
+                  //   input.value = "";
+                  //   }
+                  // }}
                 />
                 <span className="ml-4 text-gray-500">または画像をドラッグ＆ドロップ</span>
               </div>)

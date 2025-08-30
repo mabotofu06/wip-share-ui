@@ -50,7 +50,9 @@ export async function fetchMyWorkingGroups(): Promise<SupabaseResponse<GetWorkGr
 
   const { data, error } = await supabase
     .from('work_group')
-    .select('*').filter('user_id', 'eq', JSON.parse(localStorage.getItem('user_info')??"{}").id).filter('close_flag', 'eq', false);
+    .select('*')
+    .eq('user_id', JSON.parse(localStorage.getItem('user_info')??"{}").id)
+    .eq('close_flag', false);
   if (error) {
     throw error;
   }

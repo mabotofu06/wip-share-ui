@@ -1,12 +1,9 @@
+import { UserInfo } from "@/app/_type/data";
 import { OrganismsReactionButton } from "./ActionButton";
 import { OrganismsStampButton } from "./StampButton";
 
 type Props = {
-  userInfo: {
-    id: string;
-    name: string;
-    iconImage: string;
-  };
+  userInfo: UserInfo;
   editable: boolean;
   updated: string;
 
@@ -60,13 +57,13 @@ export const OrganismsPostListHeaderCard = (props: Props) => {
           </div>
           <div className="flex justify-between items-center p-5 border-t border-t-green-600">
             <div className="flex">
-              <OrganismsReactionButton
+              {/* TODO:v0.1以降でリリース<OrganismsReactionButton
                 likeNum={props.likeNum}
                 isLike={props.isLike}
                 bookmarkNum={props.bookmarkNum}
                 isBookmark={props.isBookmark}
               />
-              <OrganismsStampButton className="ml-5" />
+              <OrganismsStampButton className="ml-5" /> */}
             </div>
             <div>
               投稿数: <span className="post-num text-green-600 font-semibold">{props.postNum}</span>

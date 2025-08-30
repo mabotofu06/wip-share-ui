@@ -3,19 +3,7 @@
 import { createElement, useState } from "react";
 import { OrganismsReactionButton } from "./ActionButton";
 import { OrganismsStampButton } from "./StampButton";
-
-const userInfo = {
-  name: "まーぼーどーふ",
-  id: "@mabotofu06"
-};
-
-const postData = {
-  title: "新しいイラストを描きました！",
-  content: "最近はデジタルペイントに挑戦しています。色使いや構図を工夫して、見る人が楽しめる作品を目指しています。ご感想やアドバイスがあればぜひ教えてください！これからも色々なジャンルに挑戦していきたいです。",
-  image: "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-  update: Date.now() - 1000 * 60 * 60 * 24 * 2, // 2 days ago
-  postNum: 13
-};
+import { WorkPost } from "@/app/_type/data";
 
 export const ActionMenu = ()=>{
   return(
@@ -28,9 +16,11 @@ export const ActionMenu = ()=>{
 type Props = {
   className?: string;
   size?: 'normal'|'small';
+  post: WorkPost;
 }
 
 export function OrganismsPostCard(props: Props) {
+  console.log("Rendering PostCard:", props.post);
   const iconSize = props.size === 'small' ? "w-7 h-7" : "w-10 h-10";
   const [footerOpen, setFooterOpen] = useState(false);
   const [footerAnim, setFooterAnim] = useState<'expand'|'collapse'|''>('');
@@ -56,12 +46,12 @@ export function OrganismsPostCard(props: Props) {
     { className: `post-card relative border border-lime-500 rounded-2xl overflow-hidden bg-white${props.className ? ' '+props.className : ''}` }, (
     <div>
       <div className="header absolute top-0 p-2 w-full bg-white border-b border-green-500 opacity-40 hover:opacity-100">
-        <span>投稿日: {new Date(postData.update).toLocaleDateString()}</span>
+        <span>投稿日: {new Date(props.post.createdAt).toLocaleDateString()}</span>
       </div>
       {/* 画像 全体表示（高さは画像に合わせる） */}
       <div className="flex justify-center items-center bg-gray-100">
         <img
-          src={postData.image}
+          src={props.post.image}
           alt="Post Image"
           onClick={() => setShowOverlay(true)}
         />
@@ -74,7 +64,7 @@ export function OrganismsPostCard(props: Props) {
           onClick={() => setShowOverlay(false)}
         >
           <img
-            src={postData.image}
+            src={props.post.image}
             alt="拡大画像"
             style={{maxWidth: "90vw", maxHeight: "90vh", borderRadius: "16px", boxShadow: "0 0 32px #0008"}}
             onClick={e => e.stopPropagation()}
@@ -89,12 +79,12 @@ export function OrganismsPostCard(props: Props) {
             className={`w-full ${footerAnim === 'expand' ? 'animate-footer-expand' : ''} ${footerAnim === 'collapse' ? 'animate-footer-collapse' : ''}`}
             style={{bottom: '60px', maxHeight: footerAnim === '' ? '0' : undefined, overflow: 'hidden'}}
           >
-            <p className="post-content m-3">{postData.content}</p>
+            <p className="post-content m-3">{props.post.note}</p>
           </div>
         )}
         <div className="flex justify-between items-center">
           <div className="actions flex items-center gap-6 mt-2">
-            <OrganismsStampButton />
+            {/* <OrganismsStampButton /> */}
           </div>
           
           <button

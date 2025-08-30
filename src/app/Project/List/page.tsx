@@ -1,12 +1,19 @@
 "use client"
 
 import { OrganismsGroupCard } from "@/app/_components/organisms/GroupCard";
+import { OrganismsTabMenu } from "@/app/_components/organisms/TabMenu";
 import { fetchMyWorkingGroups, fetchWorkGroups } from "@/app/_constants/supabase/client";
 import { WorkGroup } from "@/app/_type/data";
 import { SupabaseResponse, GetWorkGroupsData } from "@/app/_type/supabase";
 import { useEffect, useState } from "react";
 
+const navigationMenu = [
+  {label: "作業中の投稿", code: 0},
+  {label: "完了した投稿", code: 1},
+]
+
 export default function ProjectListPage() {
+  const [activeMenu, setActiveMenu] = useState<number>(navigationMenu[0].code);
   const [groups, setGroups] = useState<Array<WorkGroup>>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -47,9 +54,11 @@ export default function ProjectListPage() {
 
   return(
       <div className="timeline bg-white h-full overflow-y-auto custom-scrollbar px-3">
+      <OrganismsTabMenu tabMenu={navigationMenu} activeTab={activeMenu} onChange={(num) => setActiveMenu(num)}>
       {groups.map((group, index) => (
         <OrganismsGroupCard className="mt-3" key={index} group={group} />
       ))}
+      </OrganismsTabMenu>
     </div>
   )
 }

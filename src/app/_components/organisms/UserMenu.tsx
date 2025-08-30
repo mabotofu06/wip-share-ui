@@ -1,11 +1,12 @@
 "use client";
 
-import { getUserInfo } from "@/app/_composables/userInfo";
+import { getUserInfo, setUserInfo } from "@/app/_composables/userInfo";
 import { signInWithGoogle } from "@/app/_constants/supabase/client";
 import { useState } from "react";
 import { AtomsIconVerticalArrow } from "../atoms/icon/VerticalArrow";
 import { AtomsIconBookmark } from "../atoms/icon/Bookmark";
 import AuthForm from "./modal/LoginForm";
+import { UserInfo } from "@/app/_type/data";
 
 
 const guestMenuList = [
@@ -26,7 +27,16 @@ const guestMenuList = [
         <path d="M8 15h8" />
       </svg>
     ),
-    onClick: signInWithGoogle
+    onClick: ()=>{
+      if(typeof window !== 'undefined' && window.localStorage.getItem('user_info') === null){
+        setUserInfo({
+          id: "@mabotofu06",
+          name: "まーぼーどーふ",
+          iconImg: "https://lh3.googleusercontent.com/a/ACg8ocJ5ARk3Lglj09EI5AYML1WXuktkksCPWTKJqIuwfJ9R0w0-EqXg=s288-c-no",
+        });
+      }
+      location.href = "/Top";
+    }//signInWithGoogle
   }
 ];
 
@@ -82,7 +92,12 @@ const userMenuList = [
         <path d="M21 10.5a8.38 8.38 0 01-7.5 7.5A8.38 8.38 0 013 10.5V7a4 4 0 014-4h6a4 4 0 014 4v3.5z" />
         <path d="M8 15h8" />
       </svg>
-    )
+    ),
+    onClick: ()=>{
+      if(typeof window === 'undefined') return;
+      localStorage.removeItem("user_info");
+      window.location.href = "/";
+    }
   }
 ];
 
@@ -107,7 +122,7 @@ function getMenuItems(isGuest: boolean) {
       <button
         className="flex items-center text-lg hover:bg-green-50 py-3 w-full"
         key={index}
-        onClick={() => navigateTo(item.link)}
+        onClick={item.onClick ? item.onClick : () => navigateTo(item.link)}
       >
         {item.icon}
         {item.name}
@@ -116,31 +131,32 @@ function getMenuItems(isGuest: boolean) {
   });
 }
 
-export const OrganismsUserMenu = () => {
+type Props = {
+  userInfo?: UserInfo;
+}
+
+export const OrganismsUserMenu = (props: Props) => {
   const [open, setOpen] = useState(true);
   const iconSize = "w-10 h-10";
 
-  //TODO:このままだとページ遷移のたびにこの処理が呼ばれて反映に時間がかかってしまうため状態管理を利用する
-  const userInfo = getUserInfo();
-
-  return userInfo ? (
+  return props.userInfo ? (
     <div>
       <div
         className="user-menu mt-5 p-3 flex items-center bg-white hover:opacity-80 hover:bg-green-100 justify-between"
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center">
-          <img className={"user-icon bg-green-800 rounded-full " + iconSize} src={userInfo?.iconImage} alt="User Icon" />
+          <img className={"user-icon bg-green-800 rounded-full " + iconSize} src={props.userInfo?.iconImg} alt="User Icon" />
           <div className="user-info ml-6 flex flex-col justify-center text-md">
-            <h2 className="user-name font-semibold">{userInfo?.name}</h2>
-            <p className="user-id text-xs">{userInfo?.id }</p>
+            <h2 className="user-name font-semibold">{props.userInfo?.name}</h2>
+            <p className="user-id text-xs">{props.userInfo?.id }</p>
           </div>
         </div>
 
         <AtomsIconVerticalArrow up={!open} />
       </div>
       <div className={`user-menu-content ms-10 ${open ? "block" : "hidden"}`}>
-        {getMenuItems(userInfo===undefined)}
+        {getMenuItems(props.userInfo===undefined)}
       </div>
       {/* <AuthForm /> */}
     </div>
@@ -161,7 +177,7 @@ export const OrganismsUserMenu = () => {
         <AtomsIconVerticalArrow up={!open} />
       </div>
       <div className={`user-menu-content ms-10 ${open ? "block" : "hidden"}`}>
-        {getMenuItems(userInfo===undefined)}
+        {getMenuItems(props.userInfo===undefined)}
       </div>
             {/* <AuthForm /> */}
     </div>

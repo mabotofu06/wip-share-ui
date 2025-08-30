@@ -1,8 +1,4 @@
-export interface UserInfo {
-  id: string;
-  name: string;
-  iconImage: string;
-}
+import { UserInfo } from "../_type/data";
 
 export const setUserInfo = (userInfo: UserInfo) => {
   if(typeof window !== 'undefined'){

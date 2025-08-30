@@ -31,3 +31,11 @@ export interface WorkGroup {
   isClose: boolean;
   updatedAt: string;
 }
+
+export interface WorkPost {
+  id: string;
+  userInfo: UserInfo;
+  note: string;
+  image: string;
+  createdAt: string;
+}

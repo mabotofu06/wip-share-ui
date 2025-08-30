@@ -5,27 +5,6 @@ import { createElement } from "react";
 import { OrganismsReactionButton } from "./ActionButton";
 import { OrganismsStampButton } from "./StampButton";
 import { WorkGroup } from "@/app/_type/data";
-import { group } from "console";
-
-const wippoData = {
-  title: "",
-  content: "",
-  images: [
-    "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-    "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
-    "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-    "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
-    "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-    "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
-    "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-    "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
-    "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-    "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
-    "https://pbs.twimg.com/media/GMQKeJIaoAAhx9v?format=jpg",
-    "https://pbs.twimg.com/media/GKi6EmfbEAAfXKG?format=jpg",
-  ],
-  update: Date.now() - 1000 * 60 * 60 * 24 * 2, // 2 days ago
-};
 
 export const ActionMenu = ()=>{
   return(
@@ -54,6 +33,9 @@ export function OrganismsGroupCard(props: Props) {
   const handleNext = () => setImgIdx(idx => (idx + 1) % total);
   console.log(props.group)
 
+  const NavigateToWorkGroupPage = (groupId: string) => {
+    location.href = `/Work/Group/${groupId}`;
+  }
 
   return createElement("div", { className: `post-card relative border rounded-lg overflow-hidden h-[600px] ${props.className}` }, (
     <div>
@@ -76,7 +58,7 @@ export function OrganismsGroupCard(props: Props) {
       <img
         src={props.group.images[imgIdx]}
         alt={`Post Image ${imgIdx+1}`}
-        onClick={()=>{window.location.href = "/Wippro"}}
+        onClick={() => NavigateToWorkGroupPage(props.group.id)}
       />
       {/* 画像スライダー */}
       { total > 1 && (
