@@ -1,30 +1,27 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MoleculesModal } from "../../molecules/Modal";
-import { closeModal } from "@/app/_state/slice/modal";
-import { store } from "@/app/_state/store";
 import { uploadPostImage } from "@/app/_constants/supabase/storageClient";
-import { insertWorkGroup } from "@/app/_constants/supabase/workGroupClient";
+import { insertWorkGroup, updateWorkGroup } from "@/app/_constants/supabase/workGroupClient";
 import { insertNewPost } from "@/app/_constants/supabase/postClient";
-  
-type Props = {
-  groupId?: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { closePostFormModal } from "@/app/_state/slice/modal";
+import { getEditWorkGroupId, getWorkGroupDetail } from "@/app/_state/storage";
+import { store } from "@/app/_state/store";
 
 export const OrganismsPostFormModal = () => {
+  const dispatch = useDispatch();
+  const modalOpen = useSelector((state: any) => state.modal.openPostFormModal);
+
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState("");
   const [image, setImage] = useState<File | null>(null);
-
-  // useEffect(() => {
-  // },[]);
 
   const deleteImage = () => {
     setImage(null);
   }
 
   const submitForm = async () => {
-    //store.dispatch(closeModal());
     //バリデーションチェック
     if(!image) {
       console.error("No image selected");
@@ -40,8 +37,14 @@ export const OrganismsPostFormModal = () => {
     const publicUrl = await uploadPostImage(image);
     if (!publicUrl) return;
 
-    // 投稿データ（グループとポスト）を新規作成する（TODO:トランザクション）
-    const groupId = await insertWorkGroup(publicUrl);
+    let groupId: string | null = getEditWorkGroupId();
+    if (!groupId) {
+      console.warn("No group ID found");
+      groupId = await insertWorkGroup(publicUrl);
+    }else {
+      await updateWorkGroup(groupId, publicUrl);
+    }
+
     if (!groupId) return;
     const postId = await insertNewPost(publicUrl, note, groupId);
     if (!postId) return;
@@ -49,27 +52,13 @@ export const OrganismsPostFormModal = () => {
     console.log("Image uploaded successfully:", publicUrl);
     setImage(null);
     setNote("");
-    setOpen(true);
+    store.dispatch(closePostFormModal());
   }
 
+  if (!modalOpen) return null;
   return (
     <div>
-      <MoleculesModal>
-        {open ? (
-          <div className="flex flex-col justify-center items-center">
-            <h2 className="text-2xl">投稿が完了しました！</h2>
-            <h2 className="text-2xl mb-8">新しい作品グループに説明を追加してみませんか？</h2>
-            <button
-              className="bg-green-600 text-white rounded-2xl font-bold text-lg py-3 px-6"
-              onClick={() => {
-                setOpen(false);
-                store.dispatch(closeModal());
-              }}
-            >
-              作品グループを開く
-            </button>
-          </div>
-        ) : (
+      <MoleculesModal onClickCloseBtn={() => dispatch(closePostFormModal())}>
         <div className="project-form m-8 w-[800px]">
           <div className="mb-4">
             {image ? (
@@ -150,8 +139,7 @@ export const OrganismsPostFormModal = () => {
           >
             投稿する
           </button>
-      </div>)
-      }
+      </div>
       </MoleculesModal>
     </div>
   );

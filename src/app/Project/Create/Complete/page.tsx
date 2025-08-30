@@ -1,7 +1,7 @@
 "use client";
 
 import { OrganismsPostFormModal } from "@/app/_components/organisms/modal/PostFormModal";
-import { openModal } from "@/app/_state/slice/modal";
+import { openPostFormModal } from "@/app/_state/slice/modal";
 import { store } from "@/app/_state/store";
 import { useState } from "react";
 
@@ -30,7 +30,7 @@ const projectData = {
 }
 
 export default function ProjectCreateCompletePage() {
-  const [open, setOpenModal] = useState(true);
+  const [open, setopenPostFormModal] = useState(true);
   
   return (
     <div className="flex flex-col justify-center items-center w-full m-8">
@@ -44,8 +44,8 @@ export default function ProjectCreateCompletePage() {
       <button
         className="bg-green-600 text-white rounded-full px-4 py-2 mt-4 w-fit mb-10"
         onClick={() => {
-          setOpenModal(false);
-          store.dispatch(openModal());
+          setopenPostFormModal(false);
+          store.dispatch(openPostFormModal());
         }}
       >
         投稿する
@@ -69,7 +69,7 @@ export default function ProjectCreateCompletePage() {
               //     <div className="flex flex-col justify-center items-end h-full">
               //       <button
               //         className="text-6xl text-gray-600 hover:text-gray-800 flex items-center justify-center rounded-full"
-              //         onClick={() => setOpenModal(false)}
+              //         onClick={() => setopenPostFormModal(false)}
               //         aria-label="閉じる"
               //       >
               //       ×
@@ -85,8 +85,8 @@ export default function ProjectCreateCompletePage() {
               //         <button
               //           className="bg-green-600 text-white rounded-full px-4 py-2 mt-4 w-fit"
               //           onClick={() => {
-              //             setOpenModal(false);
-              //             store.dispatch(openModal());
+              //             setopenPostFormModal(false);
+              //             store.dispatch(openPostFormModal());
               //           }}
               //         >
               //           投稿する

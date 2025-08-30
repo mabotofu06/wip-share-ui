@@ -1,6 +1,6 @@
 "use client";
 import { OrganismsPostFormModal } from "@/app/_components/organisms/modal/PostFormModal";
-import { openModal } from "@/app/_state/slice/modal";
+import { openPostFormModal } from "@/app/_state/slice/modal";
 import { store } from "@/app/_state/store";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -19,20 +19,20 @@ export default function ProjectCreatePage() {
     }
   }, []);
 
-  const [open, setOpenModal] = useState(false);
+  const [open, setopenPostFormModal] = useState(false);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const submitProjectDraft = () =>{
-    setOpenModal(true);
+    setopenPostFormModal(true);
   }
 
   const submitProject = () => {
     // TODO:ここでAPI送信などの処理を実装
     console.log("Project submitted:", { title, description });
     //store.dispatch(open())
-    //setOpenModal(true);
+    //setopenPostFormModal(true);
     window.location.href = "/Project/Create/Complete";
   }
 
@@ -83,7 +83,7 @@ export default function ProjectCreatePage() {
             <div className="flex flex-col justify-center items-end h-full">
               <button
                 className="text-6xl text-gray-600 hover:text-gray-800 flex items-center justify-center rounded-full"
-                onClick={() => setOpenModal(false)}
+                onClick={() => setopenPostFormModal(false)}
                 aria-label="閉じる"
               >
               ×

@@ -1,62 +1,126 @@
 import { useState } from "react";
 import { supabase } from "@/app/_constants/supabase/client";
+import { MoleculesModal } from "../../molecules/Modal";
+import { store } from "@/app/_state/store";
+import { useSelector } from "react-redux";
+import { closeLoginModal } from "@/app/_state/slice/modal";
+import { setUserInfo } from "@/app/_composables/userInfo";
+import { APP_NAME } from "@/app/_constants/app";
 
-export default function AuthForm() {
+const googleIcon = () =>{
+  return(
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 48 48"
+    >
+            <g>
+              <path fill="#4285F4" d="M24 9.5c3.54 0 6.72 1.22 9.22 3.22l6.88-6.88C36.38 2.36 30.57 0 24 0 14.64 0 6.4 5.64 2.44 14.02l8.46 6.58C12.94 14.06 17.06 9.5 24 9.5z"/>
+              <path fill="#34A853" d="M46.1 24.5c0-1.64-.14-3.22-.4-4.75H24v9h12.5c-.54 2.92-2.18 5.4-4.66 7.08l7.22 5.62C43.98 37.36 46.1 31.46 46.1 24.5z"/>
+              <path fill="#FBBC05" d="M10.9 28.6c-1.04-3.12-1.04-6.48 0-9.6l-8.46-6.58C.86 16.64 0 20.22 0 24c0 3.78.86 7.36 2.44 10.58l8.46-6.58z"/>
+              <path fill="#EA4335" d="M24 48c6.57 0 12.38-2.16 16.88-5.9l-7.22-5.62c-2.02 1.36-4.62 2.16-7.66 2.16-6.94 0-11.06-4.56-12.1-10.08l-8.46 6.58C6.4 42.36 14.64 48 24 48z"/>
+              <path fill="none" d="M0 0h48v48H0z"/>
+            </g>
+          </svg>
+
+  )
+}
+
+export default function OrganismsLoginForm() {
+  const modalOpen = useSelector((state: any) => state.modal.openLoginModal);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignUp = async () => {
-    setLoading(true);
+  const closeModal = () => {
+    setEmail("");
+    setPassword("");
+    store.dispatch(closeLoginModal());
+  };
+
+  //TODO: 実際にsupabaseの認証を通せるようにする
+  const handleLogin = async () => {
+    // setLoading(true);
     setError("");
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) setError(error.message);
+    setUserInfo({
+      id: email,
+      name: email.split('@')[0],
+      iconImg:"",
+    })
+    closeModal();
+    location.href = "/Top";
+    //TODO: supabaseだとメアドでの認証のためuserTdから取得できない
+    // const { error } = await supabase.auth.signInWithPassword({ email, password });
+    // if (error) setError(error.message);
     setLoading(false);
   };
 
-  const handleSignIn = async () => {
-    setLoading(true);
-    setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setError(error.message);
-    setLoading(false);
+  const handleGoogleAuth = async () => {
+    setUserInfo({
+      id: "@mabotofu06",
+      name: "まーぼーどーふ",
+      iconImg: "https://lh3.googleusercontent.com/a/ACg8ocJ5ARk3Lglj09EI5AYML1WXuktkksCPWTKJqIuwfJ9R0w0-EqXg=s288-c-no",
+    });
+    closeModal();
+    location.href = "/Top";
+
+
+    // setLoading(true);
+    // setError("");
+    // const { error } = await supabase.auth.signInWithOAuth({ provider: "google" });
+    // if (error) setError(error.message);
+    // setLoading(false);
   };
 
+  if (!modalOpen) return null;
   return (
-    <div className="overlay">
-      <div className="max-w-sm mx-auto p-4 border rounded bg-white z-50">
-        <h2 className="text-lg font-bold mb-4">ログイン / 新規登録</h2>
+    <MoleculesModal onClickCloseBtn={closeModal}>
+      <div className="bg-green-100 p-4 rounded-md flex items-center gap-2 my-3">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-9.25a.75.75 0 011.5 0v4a.75.75 0 01-1.5 0v-4zm.75 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+        </svg>
+        {`現在 ${APP_NAME} は招待されたユーザのみのログインが可能となっております`}
+      </div>
+      <div className="flex justify-center w-full">
+      <div className="flex flex-col gap-4 mt-5 items-center">
         <input
           type="email"
-          placeholder="メールアドレス"
+          placeholder="User ID"
           value={email}
-          onChange={e => setEmail(e.target.value)}
-          className="w-full mb-2 p-2 border rounded"
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 rounded-2xl w-80"
+          disabled={loading}
         />
         <input
           type="password"
-          placeholder="パスワード"
+          placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="w-full mb-2 p-2 border rounded"
+          onChange={(e) => setPassword(e.target.value)}
+          className="border p-2 rounded-2xl w-80"
+          disabled={loading}
         />
-        {error && <div className="text-red-500 mb-2">{error}</div>}
+        {error && <div className="text-red-500">{error}</div>}
+        <div className="flex gap-2">
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className="bg-green-500 text-white px-4 py-2 rounded-3xl w-40"
+          >
+            ログイン
+          </button>
+        </div>
         <button
-          onClick={handleSignIn}
+          onClick={handleGoogleAuth}
           disabled={loading}
-          className="w-full bg-green-600 text-white py-2 rounded mb-2"
+          className="bg-white px-4 py-2 rounded-3xl flex items-center gap-2 border w-fit my-10"
         >
-          ログイン
-        </button>
-        <button
-          onClick={handleSignUp}
-          disabled={loading}
-          className="w-full bg-gray-300 text-black py-2 rounded"
-        >
-          新規登録
+          {googleIcon()}Googleでサインイン
         </button>
       </div>
-    </div>
+      </div>
+    </MoleculesModal>
   );
 }

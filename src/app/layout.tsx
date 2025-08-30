@@ -1,15 +1,13 @@
 "use client";
 
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import OrganismsMenuBar_L from "./_components/organisms/Header";
-import OrganismsMenuBar_R from "./_components/organisms/MenuBar_R";
-import { MoleculesModal } from "./_components/molecules/Modal";
+import OrganismsHeader from "./_components/organisms/Header";
 import { Provider } from "react-redux";
 import { store } from "./_state/store";
-import { OrganismsProjectFormModal } from "./_components/organisms/modal/ProjectFormModal";
 import { OrganismsPostFormModal } from "./_components/organisms/modal/PostFormModal";
+import OrganismsLoginForm from "./_components/organisms/modal/LoginForm";
+import { clearEditWorkGroupId } from "./_state/storage";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  clearEditWorkGroupId();
 
   // Providerは最上位でラップ
   return (
@@ -34,12 +33,13 @@ export default function RootLayout({
         className={`flex justify-center ${geistSans.variable} ${geistMono.variable} antialiased h-screen text-green-800 bg-white`}
       >
         <Provider store={store}>
-          <OrganismsMenuBar_L />
+          <OrganismsHeader />
           <main className="w-[800px]">
             {children}
           </main>
+          <OrganismsLoginForm />
           <OrganismsPostFormModal />
-          {/* <OrganismsMenuBar_R /> */}
+          {/* <OrganismsFooter /> */}
 
           {/* <OrganismsProjectFormModal />
           <OrganismsPostFormModal /> */}

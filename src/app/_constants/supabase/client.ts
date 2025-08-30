@@ -9,33 +9,6 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function fetchWorkGroups(): Promise<SupabaseResponse<GetWorkGroupsData[]>> {
-  const cacheKey = "work_groups_cache";
-  if (typeof window !== 'undefined') {
-    const cache = localStorage.getItem(cacheKey);
-    if (cache) {
-      const { data, timestamp } = JSON.parse(cache);
-      if (Date.now() - timestamp < 5 * 60 * 1000) {
-        console.log("キャッシュに保存されたデータを返却します")
-        return data;
-      }
-    }
-  }
-
-  const { data, error } = await supabase
-    .from('work_group')
-    .select('*');
-  if (error) {
-    throw error;
-  }
-  if (typeof window !== 'undefined') {
-    //一度読み込んでから5分間はキャッシュを利用する
-    localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: Date.now() }));
-  }
-  return data as Array<GetWorkGroupsData>;
-}
-
-
 export async function fetchMyWorkingGroups(): Promise<SupabaseResponse<GetWorkGroupsData[]>> {
   const cacheKey = "my_working_groups_cache";
   if (typeof window !== 'undefined') {

@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { store } from "@/app/_state/store";
-import { openModal } from "@/app/_state/slice/modal";
+import { openPostFormModal } from "@/app/_state/slice/modal";
 import { OrganismsPostFormModal } from "@/app/_components/organisms/modal/PostFormModal";
 import { OrganismsPostCard } from "@/app/_components/organisms/PostCard";
 import { OrganismsPostListHeaderCard } from "@/app/_components/organisms/PostListHeaderCard";
 import { fetchWorkGroupByGroupId } from "@/app/_constants/supabase/workGroupClient";
 import { useParams } from "next/navigation";
 import { SupabaseResponse, GetWorkGroupsData, GetPostsData } from "@/app/_type/supabase";
-import { WorkGroup } from "@/app/_type/data";
+import { WorkGroup, WorkPost } from "@/app/_type/data";
 import { fetchPostsByGroupId } from "@/app/_constants/supabase/postClient";
 import { getUserInfo } from "@/app/_composables/userInfo";
+import { addWorkGroupDetail, getWorkGroupDetail, setEditWorkGroupId } from "@/app/_state/storage";
 
 const userInfo = {
   name     : "まーぼーどーふ",
@@ -25,63 +26,86 @@ const userInfo = {
   ]
 };
 
+
+const fetchWorkGroupDetail = async (groupId: string)=>{
+  const workGroupRes = await fetchWorkGroupByGroupId(groupId);
+  const workPostsRes = await fetchPostsByGroupId(groupId);
+
+  if (!workGroupRes || !workPostsRes) {
+    throw new Error("Failed to fetch work group detail");
+  }
+
+  const newWorkGroup: WorkGroup = {
+    id: workGroupRes.group_id,
+    userInfo: {
+      id: workGroupRes.user_id,
+      name: "不明なユーザー",
+      iconImg: "",
+    },
+    note: workGroupRes.content ?? "",
+    updatedAt: workGroupRes.update_datetime,
+    title: workGroupRes.title ?? "",
+    images: workGroupRes.images,
+    isClose: workGroupRes.close_flag,
+  }
+
+  const newWorkPosts: Array<WorkPost>
+  = (workPostsRes as GetPostsData[])
+    .map(item => ({
+      id: item.post_id,
+      userInfo: {
+        id: item.user_id,
+        name: "不明なユーザー",
+        iconImg: "",
+      },
+      note: item.content ?? "",
+      image: item.image ?? "",
+      createdAt: item.create_datetime,
+    }));
+
+  return {
+    group: newWorkGroup,
+    posts: newWorkPosts
+  };
+}
+
 export default function TemplatesWippro() {
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  const groupId = useParams().group_id as string;
-  console.log("Group ID:", groupId);
+  const groupId = useParams()?.group_id as string;
   const [group, setGroup] = useState<WorkGroup | null>(null);
-  const [posts, setPosts] = useState<Array<any>>([]);
+  const [posts, setPosts] = useState<Array<WorkPost>>([]);
   const [loading, setLoading] = useState(true);
 
+  if(!groupId) {
+    //TODO:エラー画面に遷移
+    console.log("Group ID:", groupId);
+  }
+
+  setEditWorkGroupId(groupId);
+
   useEffect(()=>{
-    fetchWorkGroupByGroupId(groupId)
-      .then((data: SupabaseResponse<GetWorkGroupsData>) => {
-        const result = data as GetWorkGroupsData;
-        if (result) {
-          console.log("Fetched group data:", result);
-          setGroup({
-            id: result.group_id,
-            userInfo: {
-              id: result.user_id,
-              name: "不明なユーザー",
-              iconImg: "",
-            },
-            note: result.content ?? "",
-            updatedAt: result.update_datetime,
-            title: result.title ?? "",
-            images: result.images,
-            isClose: result.close_flag,
-          });
-        } else {
-          console.error("Invalid data format:", data);
+    const groupDetail = getWorkGroupDetail(groupId);
+    if(groupDetail?.posts.length){
+      //キャッシュに保持されているため再取得しない
+      console.log("キャッシュから取得したため再取得しない");
+      setPosts(groupDetail.posts);
+      setGroup(groupDetail.group);
+      return;
+    }
+
+    fetchWorkGroupDetail(groupId)
+      .then(
+        (data)=>{
+          if(!data) return;
+          
+          setPosts(data.posts);
+          setGroup(data.group);
+          addWorkGroupDetail(groupId, data.group, data.posts);
         }
-      })
+      )
       .catch(console.error)
       .finally(() => setLoading(false));
-
-      fetchPostsByGroupId(groupId)
-        .then((data: SupabaseResponse<GetPostsData[]>) => {
-          console.log("Fetched posts data:", data);
-          const result = data as GetPostsData[];
-          if (Array.isArray(result)) {
-            setPosts(result.map(item => ({
-                id: item.post_id,
-                userInfo: {
-                  id: item.user_id,
-                  name: "不明なユーザー",
-                  iconImg: "",
-                },
-                note: item.content ?? "",
-                image: item.image ?? "",
-                createdAt: item.create_datetime,
-            })));
-          } else {
-            console.error("Invalid data format:", data);
-          }
-        })
-        .catch(console.error)
-        .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -132,7 +156,7 @@ export default function TemplatesWippro() {
         {group && (group.userInfo.id === userInfo.id) && (
           <button
             className="new-post-button bg-green-500 text-white py-2 px-4 rounded-3xl"
-            onClick={() => store.dispatch(openModal())}
+            onClick={() => store.dispatch(openPostFormModal())}
           >
             新しいポスト
           </button>
@@ -154,8 +178,6 @@ export default function TemplatesWippro() {
           )}
         </div>
       </div>
-
-      <OrganismsPostFormModal />
     </div>
   );
 }

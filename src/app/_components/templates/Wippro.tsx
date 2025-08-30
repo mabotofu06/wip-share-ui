@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ActionMenu } from "../organisms/GroupCard";
 import { OrganismsPostCard } from "../organisms/PostCard";
 import { store } from "@/app/_state/store";
-import { openModal } from "@/app/_state/slice/modal";
+import { openPostFormModal } from "@/app/_state/slice/modal";
 import { OrganismsPostFormModal } from "../organisms/modal/PostFormModal";
 import { OrganismsPostListHeaderCard } from "../organisms/PostListHeaderCard";
 
@@ -80,7 +80,7 @@ export default function TemplatesWippro() {
 
         <button
           className="new-post-button bg-green-500 text-white py-2 px-4 rounded-3xl"
-          onClick={() => store.dispatch(openModal())}
+          onClick={() => store.dispatch(openPostFormModal())}
         >
           新しいポスト
         </button>

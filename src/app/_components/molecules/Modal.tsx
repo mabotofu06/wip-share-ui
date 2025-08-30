@@ -1,16 +1,12 @@
-import { closeModal } from "@/app/_state/slice/modal";
+"use client";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 type Props = {
+  onClickCloseBtn: () => void;
   children: React.ReactNode;
 }
 
 export const MoleculesModal = (props: Props) => {
-  const dispatch = useDispatch();
-  const modalOpen = useSelector((state: any) => state.modal.open);
-
-  if (!modalOpen) return (null);
   return (
     <div className={`overlay`}>
       {/* モーダル */}
@@ -19,7 +15,7 @@ export const MoleculesModal = (props: Props) => {
           <div className="flex justify-end">
             <button
               className="text-center text-3xl font-semibold text-gray-600 hover:bg-gray-100 rounded-full w-[40px] h-[40px]"
-              onClick={() => dispatch(closeModal())}>
+              onClick={props.onClickCloseBtn}>
                 ×
             </button>
           </div>

@@ -1,12 +1,12 @@
 'use client'
 
 import { OrganismsTabMenu } from "../organisms/TabMenu";
-import { fetchWorkGroups } from "@/app/_constants/supabase/client";
 import { useEffect, useState } from "react";
 import { OrganismsGroupCard } from "../organisms/GroupCard";
 import { WorkGroup } from "@/app/_type/data";
 import { SupabaseResponse, GetWorkGroupsData } from "@/app/_type/supabase";
 import { setUserInfo } from "@/app/_composables/userInfo";
+import { fetchWorkGroups } from "@/app/_constants/supabase/workGroupClient";
 
 const navigationMenu = [
   // {label: "Pick Up!", code: 0},

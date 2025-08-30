@@ -1,13 +1,13 @@
 "use client"
 
 import { APP_NAME } from "@/app/_constants/app";
-import { openModal } from "@/app/_state/slice/modal";
+import { openPostFormModal } from "@/app/_state/slice/modal";
 import { store } from "@/app/_state/store";
 import { OrganismsUserMenu } from "./UserMenu";
 import { getUserInfo } from "@/app/_composables/userInfo";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function OrganismsMenuBar_L() {
+export default function OrganismsHeader() {
   const [userInfo, setUserInfo] = useState(getUserInfo());
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function OrganismsMenuBar_L() {
   const createNewWorks = () => {
     //TODO:認証したユーザの投稿状況を確認し、新しい投稿を作成できるか確認する（MAX3件）
     console.log("新しいプロジェクトを作成");
-    store.dispatch(openModal());
+    store.dispatch(openPostFormModal());
   };
 
   return (

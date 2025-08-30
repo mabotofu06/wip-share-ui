@@ -1,12 +1,11 @@
 "use client";
 
 import { getUserInfo, setUserInfo } from "@/app/_composables/userInfo";
-import { signInWithGoogle } from "@/app/_constants/supabase/client";
 import { useState } from "react";
 import { AtomsIconVerticalArrow } from "../atoms/icon/VerticalArrow";
-import { AtomsIconBookmark } from "../atoms/icon/Bookmark";
-import AuthForm from "./modal/LoginForm";
 import { UserInfo } from "@/app/_type/data";
+import { openLoginModal } from "@/app/_state/slice/modal";
+import { store } from "@/app/_state/store";
 
 
 const guestMenuList = [
@@ -27,16 +26,7 @@ const guestMenuList = [
         <path d="M8 15h8" />
       </svg>
     ),
-    onClick: ()=>{
-      if(typeof window !== 'undefined' && window.localStorage.getItem('user_info') === null){
-        setUserInfo({
-          id: "@mabotofu06",
-          name: "まーぼーどーふ",
-          iconImg: "https://lh3.googleusercontent.com/a/ACg8ocJ5ARk3Lglj09EI5AYML1WXuktkksCPWTKJqIuwfJ9R0w0-EqXg=s288-c-no",
-        });
-      }
-      location.href = "/Top";
-    }//signInWithGoogle
+    onClick: ()=>{ store.dispatch(openLoginModal()); }
   }
 ];
 
@@ -158,7 +148,6 @@ export const OrganismsUserMenu = (props: Props) => {
       <div className={`user-menu-content ms-10 ${open ? "block" : "hidden"}`}>
         {getMenuItems(props.userInfo===undefined)}
       </div>
-      {/* <AuthForm /> */}
     </div>
   ):(
     <div>
@@ -167,7 +156,7 @@ export const OrganismsUserMenu = (props: Props) => {
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center">
-          <div className={"user-icon bg-green-800 rounded-full " + iconSize} ></div>
+          <img className={"user-icon bg-green-800 rounded-full " + iconSize} />
           <div className="user-info ml-6 flex flex-col justify-center text-md">
             <h2 className="user-name font-semibold">{"ゲストユーザー"}</h2>
             <p className="user-id text-xs">{"@guest"}</p>

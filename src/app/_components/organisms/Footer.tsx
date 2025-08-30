@@ -61,7 +61,7 @@ function PickUpUserCard(props: {id: string, title: string, img: string}) {
   );
 }
 
-export default function OrganismsMenuBar_R() {
+export default function OrganismsFooter() {
   const iconSize = "w-10 h-10";
   return (
     <footer className="bg-white-300 shadow flex flex-col justify-between w-70 p-3 min-h-[800px]">

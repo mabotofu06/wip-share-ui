@@ -1,6 +1,8 @@
 import { GetWorkGroupsData, SupabaseResponse } from "@/app/_type/supabase";
 import { supabase } from "./client"
 import { getUserInfo } from "@/app/_composables/userInfo";
+import { MAX_POST_NUM } from "../app";
+import { deleteWorkGroupDetailByGroupId, getWorkGroupDetail } from "@/app/_state/storage";
 
 const TBL_NAME = 'work_group'
 
@@ -16,7 +18,7 @@ export const fetchWorkGroupByGroupId = async (groupId: string) => {
         const result = data.find((item: GetWorkGroupsData) => item.group_id === groupId);
         if (result) {
           console.log("キャッシュに保存されたデータを返却します")
-          return result;
+          return result as GetWorkGroupsData;
         }
       }
     }
@@ -39,7 +41,8 @@ export const fetchWorkGroupsByUserId = async (userId: string) => {
   const { data, error } = await supabase
     .from(TBL_NAME)
     .select('*')
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .order('update_datetime', { ascending: true });
 
   if (error) {
     throw error;
@@ -63,7 +66,8 @@ export const fetchWorkGroups = async (limit: number = 20):Promise<SupabaseRespon
 
   const { data, error } = await supabase
     .from('work_group')
-    .select('*');
+    .select('*')
+    .order('update_datetime', { ascending: false });
   if (error) {
     throw error;
   }
@@ -97,4 +101,31 @@ export const insertWorkGroup = async (imageUrl: string): Promise<string> => {
   }
 
   return data?.group_id as string;
+};
+
+export const updateWorkGroup = async (groupId: string, image: string, closeFlag: boolean = false, title: string = "", content: string = ""): Promise<void> => {
+  const workGroup = await fetchWorkGroupByGroupId(groupId);
+  if(!workGroup){
+    throw new Error("Work group not found");
+  }
+  if(workGroup.close_flag){
+    return;
+  }
+
+  const images = [...workGroup.images, image];
+  const { error } = await supabase
+    .from(TBL_NAME)
+    .update({
+      title,
+      content,
+      images,
+      close_flag: MAX_POST_NUM <= images.length ? true : closeFlag  //10件の投稿数を超えたら自動的にクローズする
+    })
+    .eq('group_id', groupId);
+
+  if (error) {
+    throw error;
+  }
+
+  deleteWorkGroupDetailByGroupId(groupId);
 };

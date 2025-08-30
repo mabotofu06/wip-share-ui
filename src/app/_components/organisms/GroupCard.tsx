@@ -5,6 +5,7 @@ import { createElement } from "react";
 import { OrganismsReactionButton } from "./ActionButton";
 import { OrganismsStampButton } from "./StampButton";
 import { WorkGroup } from "@/app/_type/data";
+import { addWorkGroupDetail } from "@/app/_state/storage";
 
 export const ActionMenu = ()=>{
   return(
@@ -34,10 +35,12 @@ export function OrganismsGroupCard(props: Props) {
   console.log(props.group)
 
   const NavigateToWorkGroupPage = (groupId: string) => {
+    //セッションに本ワークグループを登録
+    addWorkGroupDetail(groupId, props.group, []);
     location.href = `/Work/Group/${groupId}`;
   }
 
-  return createElement("div", { className: `post-card relative border rounded-lg overflow-hidden h-[600px] ${props.className}` }, (
+  return createElement("div", { className: `post-card relative border rounded-lg overflow-hidden max-h-[600px] ${props.className}` }, (
     <div>
       {/* Header */}
       {createElement("div", { className: `header absolute top-0 flex items-center justify-between w-full p-2 z-50 ${props.group.isClose?" bg-green-100": "bg-white"}` }, [
