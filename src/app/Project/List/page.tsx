@@ -2,14 +2,15 @@
 
 import { OrganismsGroupCard } from "@/app/_components/organisms/GroupCard";
 import { OrganismsTabMenu } from "@/app/_components/organisms/TabMenu";
-import { fetchMyWorkingGroups, fetchWorkGroups } from "@/app/_constants/supabase/client";
+import { fetchMyWorkingGroups } from "@/app/_constants/supabase/client";
 import { WorkGroup } from "@/app/_type/data";
 import { SupabaseResponse, GetWorkGroupsData } from "@/app/_type/supabase";
 import { useEffect, useState } from "react";
 
 const navigationMenu = [
-  {label: "作業中の投稿", code: 0},
-  {label: "完了した投稿", code: 1},
+  {label: "すべての投稿", code: 0},
+  {label: "作業中の投稿", code: 1},
+  {label: "完了した投稿", code: 2},
 ]
 
 export default function ProjectListPage() {

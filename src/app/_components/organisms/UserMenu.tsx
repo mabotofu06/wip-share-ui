@@ -1,6 +1,5 @@
 "use client";
 
-import { getUserInfo, setUserInfo } from "@/app/_composables/userInfo";
 import { useState } from "react";
 import { AtomsIconVerticalArrow } from "../atoms/icon/VerticalArrow";
 import { UserInfo } from "@/app/_type/data";
@@ -50,14 +49,14 @@ const userMenuList = [
   //   )
   // },
   {
-    name: "作業中の投稿",
+    name: "自分の投稿",
     link: "/Project/List",
     icon: (
       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <path d="M21 10.5a8.38 8.38 0 01-7.5 7.5A8.38 8.38 0 013 10.5V7a4 4 0 014-4h6a4 4 0 014 4v3.5z" />
         <path d="M8 15h8" />
-      </svg>
-    )
+      </svg>),
+    onClick: () => location.href = "/@mabotofu06/Work"
   },
   // {
   //   name: "ブックマーク",

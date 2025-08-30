@@ -102,7 +102,7 @@ export function OrganismsGroupCard(props: Props) {
           </div>
           <div className="ms-8">
             投稿数:
-            <span className="post-num text-green-600 font-semibold">
+            <span className="post-num text-green-600 font-semibold ms-3">
               {props.group.images.length}
             </span>
           </div>

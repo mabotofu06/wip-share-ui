@@ -7,6 +7,13 @@ import { closeLoginModal } from "@/app/_state/slice/modal";
 import { setUserInfo } from "@/app/_composables/userInfo";
 import { APP_NAME } from "@/app/_constants/app";
 
+const INFO_MESSAGE = (
+  <span className="text-center">
+    現在 {APP_NAME} は招待されたユーザのみのログインが可能です<br />
+    ログインなしでも投稿は自由に閲覧可能なので、ぜひ色々な投稿をご覧ください
+  </span>
+);
+
 const googleIcon = () =>{
   return(
     <svg
@@ -78,11 +85,8 @@ export default function OrganismsLoginForm() {
   if (!modalOpen) return null;
   return (
     <MoleculesModal onClickCloseBtn={closeModal}>
-      <div className="bg-green-100 p-4 rounded-md flex items-center gap-2 my-3">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-9.25a.75.75 0 011.5 0v4a.75.75 0 01-1.5 0v-4zm.75 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-        </svg>
-        {`現在 ${APP_NAME} は招待されたユーザのみのログインが可能となっております`}
+      <div className="flex justify-center bg-green-100 p-4 rounded-md flex items-center gap-2 my-3">
+        {INFO_MESSAGE}
       </div>
       <div className="flex justify-center w-full">
       <div className="flex flex-col gap-4 mt-5 items-center">

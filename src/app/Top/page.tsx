@@ -7,6 +7,17 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function Page() {
+type Props = {
+  searchParams:{
+    type?: string
+  }
+}
+
+export default async function Page(props: Props) {
+  const searchParams = await props.searchParams;
+  const type = searchParams.type;
+
+  console.log("Top Page type:", type);
+
   return <TemplateTop />;
 }
