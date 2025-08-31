@@ -44,14 +44,14 @@ export function OrganismsGroupCard(props: Props) {
     <div>
       {/* Header */}
       {createElement("div", { className: `header absolute top-0 flex items-center justify-between w-full p-2 z-50 ${props.group.isClose?" bg-green-100": "bg-white"}` }, [
-        <div className="flex items-center">
+        <div key="header-user" className="flex items-center">
           <div className={"user-icon bg-green-800 rounded-full " + iconSize}></div>
           <div className="user-info ml-3 flex flex-col justify-center text-md">
             <h2 className="user-name font-semibold">{props.group.userInfo.name}</h2>
             <p className="user-id text-xs">{props.group.userInfo.id}</p>
           </div>
         </div>,
-        <div className="post-update text-gray-500">
+        <div key="header-update" className="post-update text-gray-500">
           更新：{new Date(props.group.updatedAt).toLocaleDateString()}
         </div>
       ]
@@ -85,7 +85,7 @@ export function OrganismsGroupCard(props: Props) {
 
       {/* Footer */}
       {createElement('div', {className: `footer absolute bottom-0 p-4 w-full ${props.group.isClose?" bg-green-100": "bg-white"}`}, [
-        <div className="flex justify-center">
+        <div key="footer-dots" className="flex justify-center">
           <div className="flex gap-2 z-50">
             {props.group.images.map((_, i) => (
               <span
@@ -95,7 +95,7 @@ export function OrganismsGroupCard(props: Props) {
             ))}
           </div>
         </div>,
-        <div className="post-details flex w-full max-h-16">
+        <div key="footer-details" className="post-details flex w-full max-h-16">
           <div className="w-4/5 overflow-hidden">
             <h2 className="post-title text-xl font-semibold">{props.group.title}</h2>
             <p className="post-content">{props.group.note}</p>

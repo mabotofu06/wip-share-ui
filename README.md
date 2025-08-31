@@ -144,3 +144,48 @@ stamp_id| uuid
 ---|---
 id          | uuid 
 stamp_image | string
+
+### 処理フローイメージ
+#### Top画面
+```mermaid
+sequenceDiagram
+    User->>+UI: Topページにアクセス
+    UI-->>-User: CSRでページを返却
+    User->>+BL: Top用のタイムラインデータを要求
+    BL->>+DB: キャッシュが古ければDBに問い合わせ
+    DB-->>-BL: タイムラインデータを返却
+    BL-->>-User: タイムラインデータを返却
+```
+
+#### ログイン処理
+```mermaid
+sequenceDiagram
+    User->>+BL: ログインAPIを要求
+    BL->>+DB: DBに問い合わせ
+    DB-->>-BL: ユーザーデータを返却
+    BL-->>-User: ユーザ情報を返却（セッション情報はcookieに保存）
+
+```
+
+##### 作業グループ詳細画面（未ログイン・ログイン済）
+```mermaid
+sequenceDiagram
+    User->>+UI: 作業グループ詳細ページにアクセス
+    UI->>+BL: 作業グループ詳細データを要求
+    BL->>+DB: キャッシュが古ければDBに問い合わせ
+    DB-->>-BL: 作業グループ詳細データを返却
+    BL-->>-UI: 作業グループ詳細データを返却
+    UI-->>-User: SSRでページを返却(セッション情報から自分の投稿であれば編集可能に)
+
+```
+
+#### 自分の投稿画面
+```mermaid
+sequenceDiagram
+    User->>+UI: 自分の投稿ページにアクセス
+    UI->>+BL: 対象の作業グループデータを要求
+    BL->>+DB: キャッシュが古ければDBに問い合わせ
+    DB-->>-BL: 対象の投稿データを返却
+    BL-->>-UI: 対象の投稿データを返却
+    UI-->>-User: SSRでページを返却(セッション情報から自分の投稿ページでなければエラー画面へ)
+```

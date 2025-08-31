@@ -18,8 +18,17 @@ export default async function MyWorkGroup(props: Props) {
 
   console.log(type);
 
-  //TODO:認証ユーザーのIDと比較し、自分のページ以外は閲覧不可にする
-  //また、存在しないユーザーIDの場合も404エラーにする
+  // 認証ユーザー情報を取得（例: cookies, session, headersなどから）
+  // ここでは仮に getCurrentUserId() という関数があるとします
+
+  // const currentUserId = await (() => {})//getCurrentUserId();
+  // if (!currentUserId || currentUserId !== userId) {
+  //   // 自分以外のページは閲覧不可
+  //   throw new Error("Forbidden: You cannot view other users' pages");
+  // }
+
+  // 存在しないユーザーIDの場合は404
+  // ここでは fetchWorkGroupsByUserId の結果が空なら404とします
   if(!userId)  throw new Error("User ID is required");
 
   //サーバ側でデータを取得し、返却

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { OrganismsGroupCard } from "../organisms/GroupCard";
 import { WorkGroup } from "@/app/_type/data";
 import { SupabaseResponse, GetWorkGroupsData } from "@/app/_type/supabase";
-import { setUserInfo } from "@/app/_composables/userInfo";
 import { fetchWorkGroups } from "@/app/_constants/supabase/workGroupClient";
 
 const navigationMenu = [
@@ -60,10 +59,8 @@ export default function TemplateTop() {
     <div className="flex flex-col bg-white h-full">
       <OrganismsTabMenu tabMenu={navigationMenu} activeTab={initialTab} onChange={()=>{}}>
         <div className="timeline overflow-y-auto custom-scrollbar px-3">
-          {groups.map((group, index) => (
-            <div key={index}>
-              <OrganismsGroupCard className="mt-3" group={group} />
-            </div>
+          {groups.map((group) => (
+            <OrganismsGroupCard key={group.id} className="mt-3" group={group} />
           ))}
         </div>
       </OrganismsTabMenu>

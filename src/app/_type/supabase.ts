@@ -30,3 +30,14 @@ export interface GetPostsData {
   delete_flag: boolean;
   user_id: string;
 }
+
+export interface GetUserData {
+  user_id : string;
+  name   : string;
+  icon_image: string;
+  info?: string;
+  create_datetime: string;
+  update_datetime: string;
+  delete_flag: boolean;
+  delete_datetime?: string;
+}
