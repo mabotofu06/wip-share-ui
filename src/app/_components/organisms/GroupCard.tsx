@@ -40,7 +40,7 @@ export function OrganismsGroupCard(props: Props) {
     location.href = `/Work/Group/${groupId}`;
   }
 
-  return createElement("div", { className: `post-card relative border rounded-lg overflow-hidden max-h-[600px] ${props.className}` }, (
+  return createElement("div", { className: `post-card relative border rounded-lg overflow-hidden ${props.className}` }, (
     <div>
       {/* Header */}
       {createElement("div", { className: `header absolute top-0 flex items-center justify-between w-full p-2 z-50 ${props.group.isClose?" bg-green-100": "bg-white"}` }, [
@@ -57,12 +57,13 @@ export function OrganismsGroupCard(props: Props) {
       ]
       )
     }
-
+      <div className="image-container flex items-center h-[600px] overflow-hidden bg-gray-100">
       <img
         src={props.group.images[imgIdx]}
         alt={`Post Image ${imgIdx+1}`}
         onClick={() => NavigateToWorkGroupPage(props.group.id)}
       />
+      </div>
       {/* 画像スライダー */}
       { total > 1 && (
         <div>

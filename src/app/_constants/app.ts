@@ -1,6 +1,26 @@
 export const APP_NAME = 'Mochieve';
 export const APP_VERSION = '0.0.1';
 
+export const BL_INFO = {
+  HOST: "https://localhost",
+  PORT: 500,
+  API_ENDPOINT: {
+    READINESS_HEALTH_CHECK: "/api/health",
+    LOGIN: "/api/user/login",
+    LOGOUT: "/api/user/logout",
+    // USER_REGISTER: "/api/user/register",
+    // USER_PROFILE: "/api/user/profile",
+    // USER_UPDATE: "/api/user/update",
+    // POST_CREATE: "/api/post/create",
+    // POST_UPDATE: "/api/post/update",
+    // POST_DELETE: "/api/post/delete",
+    // POST_LIKE: "/api/post/like",
+    // POST_UNLIKE: "/api/post/unlike",
+    // POST_COMMENT: "/api/post/comment",
+    // POST_SHARE: "/api/post/share",
+  }
+}
+
 export const MAX_POST_NUM = 10;
 export const MAX_WORKING_POST_NUM = 3;
 
