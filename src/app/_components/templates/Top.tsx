@@ -6,14 +6,7 @@ import { OrganismsGroupCard } from "../organisms/GroupCard";
 import { WorkGroup } from "@/app/_type/data";
 import { SupabaseResponse, GetWorkGroupsData } from "@/app/_type/supabase";
 import { fetchWorkGroups } from "@/app/_constants/supabase/workGroupClient";
-
-const navigationMenu = [
-  // {label: "Pick Up!", code: 0},
-  {label: "最新", code: 1},
-  // {label: "フォロー中", code: 2},
-  {label: "作業中のポスト", code: 3},
-  {label: "完了したポスト", code: 4},
-]
+import { TOP_NAV_MENU } from "@/app/_constants/app";
 
 export default function TemplateTop() {
   const [groups, setGroups] = useState<WorkGroup[]>([]);
@@ -44,7 +37,7 @@ export default function TemplateTop() {
       .finally(() => setLoading(false));
   }, []);
 
-  const initialTab = navigationMenu[0].code;
+  const initialTab = TOP_NAV_MENU[0].code;
   console.log(groups)
 
   if (loading) {
@@ -56,9 +49,9 @@ export default function TemplateTop() {
   }
 
   return (
-    <div className="flex flex-col bg-white h-full">
-      <OrganismsTabMenu tabMenu={navigationMenu} activeTab={initialTab} onChange={()=>{}}>
-        <div className="timeline overflow-y-auto custom-scrollbar px-3">
+    <div className="flex flex-col bg-white">
+      <OrganismsTabMenu tabMenu={TOP_NAV_MENU} activeTab={initialTab} onChange={()=>{}}>
+        <div className="timeline overflow-y-scroll custom-scrollbar px-3 h-screen">
           {groups.map((group) => (
             <OrganismsGroupCard key={group.id} className="mt-3" group={group} />
           ))}

@@ -45,7 +45,7 @@ export function OrganismsPostCard(props: Props) {
   return createElement("div",
     { className: `post-card relative border border-lime-500 rounded-2xl overflow-hidden bg-white${props.className ? ' '+props.className : ''}` }, (
     <div>
-      <div className="header absolute top-0 p-2 w-full bg-white border-b border-green-500 opacity-40 hover:opacity-100">
+      <div className="header absolute top-0 p-2 w-full bg-white border-b border-green-500">
         <span>投稿日: {new Date(props.post.createdAt).toLocaleDateString()}</span>
       </div>
       {/* 画像 全体表示（高さは画像に合わせる） */}
@@ -73,7 +73,7 @@ export function OrganismsPostCard(props: Props) {
       )}
 
       {/* フッター */}
-      <div className="footer absolute bottom-0 bg-white p-2 w-full border-green-500 border-t opacity-40 hover:opacity-100">
+      <div className="footer absolute bottom-0 bg-white p-2 w-full border-green-500 border-t">
         {showFooter && (
           <div
             className={`w-full ${footerAnim === 'expand' ? 'animate-footer-expand' : ''} ${footerAnim === 'collapse' ? 'animate-footer-collapse' : ''}`}

@@ -1,6 +1,5 @@
 import { WorkGroup, WorkPost } from "@/app/_type/data";
 import { OrganismsPostCard } from "../organisms/PostCard";
-import { OrganismsGroupCard } from "../organisms/GroupCard";
 import { OrganismsPostListHeaderCard } from "../organisms/PostListHeaderCard";
 
 type Props = {
@@ -24,7 +23,7 @@ export const TemplatesWorkGroup = (props: Props) => {
         postNum={props.workGroup.images.length}
         updated={new Date(props.workGroup.updatedAt).toLocaleDateString()}
       />
-      <div>
+      <div className="work-posts h-screen overflow-y-scroll custom-scrollbar px-3">
         {props.workPosts.map(post => (
           <OrganismsPostCard className="mt-5" key={post.id} post={post} />
         ))}

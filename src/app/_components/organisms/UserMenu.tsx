@@ -5,6 +5,7 @@ import { AtomsIconVerticalArrow } from "../atoms/icon/VerticalArrow";
 import { UserInfo } from "@/app/_type/data";
 import { openLoginModal } from "@/app/_state/slice/modal";
 import { store } from "@/app/_state/store";
+import { getUserInfo } from "@/app/_composables/userInfo";
 
 
 const guestMenuList = [
@@ -56,7 +57,10 @@ const userMenuList = [
         <path d="M21 10.5a8.38 8.38 0 01-7.5 7.5A8.38 8.38 0 013 10.5V7a4 4 0 014-4h6a4 4 0 014 4v3.5z" />
         <path d="M8 15h8" />
       </svg>),
-    onClick: () => location.href = "/@mabotofu06/Work"
+    onClick: () => {
+      const userId = getUserInfo()?.id
+      location.href = `/${userId}/Work`
+    }
   },
   // {
   //   name: "ブックマーク",
